@@ -42,4 +42,22 @@ browser executes data.json
 browser renders the fetched data into its html elements
 
 0.6 -------------------------------------------------------------------------
+same sequence as previous diagram:
 
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa
+server->browser: HTML-code
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+server-->browser: spa.js
+
+browser executes data.json 
+
+browser renders the fetched data into its html elements
+
+form handling sequence:
+
+browser->server : HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+server->browser: server responds with 201
+
+browser calls event handler and rerenders the page by changing the DOM and also sends new note to server
