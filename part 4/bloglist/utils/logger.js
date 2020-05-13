@@ -1,9 +1,9 @@
-const info = (message) => {
-  console.log(message);
+const info = (...message) => {
+  console.log(...message);
 };
 
-const error = (error) => {
-  console.error(error);
+const error = (...error) => {
+  console.error(...error);
 };
 
 module.exports = {
