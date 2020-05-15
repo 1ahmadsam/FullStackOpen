@@ -79,6 +79,6 @@ describe('favourite blog', () => {
 
   test('of empty list is zero', () => {
     const result = listHelper.favouriteBlog([]);
-    expect(result).toEqual([]);
+    expect(result).toEqual(0);
   });
 });
