@@ -10,9 +10,13 @@ blogsRouter.get('/', (request, response) => {
 blogsRouter.post('/', (request, response) => {
   const blog = new Blog(request.body);
 
-  blog.save().then((result) => {
-    response.status(201).json(result);
-  });
+  if (blog.title && blog.url) {
+    blog.save().then((result) => {
+      response.status(201).json(result);
+    });
+  } else {
+    return response.status(400).json({ error: 'content missing' });
+  }
 });
 
 module.exports = blogsRouter;
