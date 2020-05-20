@@ -39,6 +39,10 @@ test('a valid blog can be added', async () => {
   };
   await api
     .post('/api/blogs')
+    .set(
+      'Authorization',
+      'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhbWkwNyIsImlkIjoiNWVjMjUxYmM0ZTVmOGQ0YjdjZTg0ZWYyIiwiaWF0IjoxNTg5OTY4OTc4fQ.Gabl8jpGMRvguAy4Ngsn66U057sWX9arM9hOHKTVwwg'
+    )
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/);
