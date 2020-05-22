@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
+import Notification from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const [user, setUser] = useState(null);
+  const [author, setAuthor] = useState('');
+  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState('');
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -19,7 +23,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
-      //noteService.setToken(user.token)
+      blogService.setToken(user.token);
     }
   }, []);
 
@@ -43,16 +47,68 @@ const App = () => {
     }
   };
 
-  // const blogForm = () => {
-  //   const addBlog = () => {};
-  //   <form onSubmit={addBlog}>
-  //     <input
-  //       value={newBlog}
-  //       onChange={({ target }) => setNewBlog(target.value)}
-  //     />
-  //     <button type='submit'>save</button>
-  //   </form>;
-  // };
+  const blogForm = () => {
+    const addBlog = async (event) => {
+      event.preventDefault();
+      try {
+        blogService.setToken(user.token);
+        const newBlog = await blogService.create({
+          title,
+          author,
+          url,
+        });
+
+        setSuccessMessage(`a new blog ${title} by ${author} added`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 5000);
+        setTitle('');
+        setAuthor('');
+        setUrl('');
+        console.log(title, url, author);
+      } catch (exception) {
+        setErrorMessage('Fill out the fields');
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+      }
+    };
+    return (
+      <React.Fragment>
+        <h3>create new</h3>
+        <form onSubmit={addBlog}>
+          <div>
+            title:
+            <input
+              type='text'
+              value={title}
+              name='Title'
+              onChange={({ target }) => setTitle(target.value)}
+            />
+          </div>
+          <div>
+            author:
+            <input
+              type='text'
+              value={author}
+              name='Author'
+              onChange={({ target }) => setAuthor(target.value)}
+            />
+          </div>
+          <div>
+            url:
+            <input
+              type='text'
+              value={url}
+              name='URL'
+              onChange={({ target }) => setUrl(target.value)}
+            />
+          </div>
+          <button type='submit'>create</button>
+        </form>
+      </React.Fragment>
+    );
+  };
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -83,7 +139,8 @@ const App = () => {
       <div>
         <h2>Log in to application</h2>
 
-        <h2>{errorMessage ? errorMessage : null}</h2>
+        <Notification message={errorMessage} messageGood={false} />
+        <Notification message={successMessage} messageGood={true} />
         {loginForm()}
       </div>
     );
@@ -92,7 +149,9 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      {/* // Temp */}
+
+      <Notification message={errorMessage} messageGood={false} />
+      <Notification message={successMessage} messageGood={true} />
       <p>
         {user.name} logged in{' '}
         <button
@@ -104,7 +163,7 @@ const App = () => {
           logout
         </button>
       </p>
-      <h2>{errorMessage ? errorMessage : null}</h2>
+      {blogForm()}
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
