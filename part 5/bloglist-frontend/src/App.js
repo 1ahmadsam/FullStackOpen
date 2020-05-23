@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import Notification from './components/Notification';
+import BlogForm from './components/BlogForm';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
+  const [blogFormVisible, setBlogFormVisible] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [user, setUser] = useState(null);
-  const [author, setAuthor] = useState('');
-  const [title, setTitle] = useState('');
-  const [url, setUrl] = useState('');
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -48,65 +47,25 @@ const App = () => {
   };
 
   const blogForm = () => {
-    const addBlog = async (event) => {
-      event.preventDefault();
-      try {
-        blogService.setToken(user.token);
-        const newBlog = await blogService.create({
-          title,
-          author,
-          url,
-        });
+    const hideWhenVisible = { display: blogFormVisible ? 'none' : '' };
+    const showWhenVisible = { display: blogFormVisible ? '' : 'none' };
 
-        setSuccessMessage(`a new blog ${title} by ${author} added`);
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 5000);
-        setTitle('');
-        setAuthor('');
-        setUrl('');
-        console.log(title, url, author);
-      } catch (exception) {
-        setErrorMessage('Fill out the fields');
-        setTimeout(() => {
-          setErrorMessage(null);
-        }, 5000);
-      }
-    };
     return (
-      <React.Fragment>
-        <h3>create new</h3>
-        <form onSubmit={addBlog}>
-          <div>
-            title:
-            <input
-              type='text'
-              value={title}
-              name='Title'
-              onChange={({ target }) => setTitle(target.value)}
-            />
-          </div>
-          <div>
-            author:
-            <input
-              type='text'
-              value={author}
-              name='Author'
-              onChange={({ target }) => setAuthor(target.value)}
-            />
-          </div>
-          <div>
-            url:
-            <input
-              type='text'
-              value={url}
-              name='URL'
-              onChange={({ target }) => setUrl(target.value)}
-            />
-          </div>
-          <button type='submit'>create</button>
-        </form>
-      </React.Fragment>
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setBlogFormVisible(true)}>
+            create new blog
+          </button>
+        </div>
+        <div style={showWhenVisible}>
+          <BlogForm
+            blogService={blogService}
+            setErrorMessage={setErrorMessage}
+            setSuccessMessage={setSuccessMessage}
+          />
+          <button onClick={() => setBlogFormVisible(false)}>cancel</button>
+        </div>
+      </div>
     );
   };
 
@@ -165,7 +124,7 @@ const App = () => {
       </p>
       {blogForm()}
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} blogService={blogService} />
       ))}
     </div>
   );
