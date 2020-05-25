@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-const BlogForm = ({ blogService, setSuccessMessage, setErrorMessage }) => {
+const BlogForm = ({ createBlog, setSuccessMessage, setErrorMessage }) => {
   const [author, setAuthor] = useState('');
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
@@ -8,7 +8,7 @@ const BlogForm = ({ blogService, setSuccessMessage, setErrorMessage }) => {
     event.preventDefault();
     try {
       //blogService.setToken(user.token);
-      const newBlog = await blogService.create({
+      createBlog({
         title,
         author,
         url,

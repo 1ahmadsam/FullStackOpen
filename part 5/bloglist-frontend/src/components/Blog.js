@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-const Blog = ({ blog, blogService }) => {
+const Blog = ({ blog, blogService, updateLikes }) => {
   const [showFullBlog, setShowFullBlog] = useState(false);
 
   const hideWhenVisible = { display: showFullBlog ? 'none' : '' };
@@ -15,7 +15,15 @@ const Blog = ({ blog, blogService }) => {
     event.preventDefault();
     try {
       //blogService.setToken(user.token);
-      const currentBlog = await blogService.update(blog.id, {
+      // const currentBlog = await blogService.update(blog.id, {
+      //   title: blog.title,
+      //   author: blog.author,
+      //   url: blog.url,
+      //   likes: blog.likes + 1,
+      //   user: blog.user ? blog.user.id : null,
+      // });
+      console.log('clicked');
+      updateLikes(blog.id, {
         title: blog.title,
         author: blog.author,
         url: blog.url,

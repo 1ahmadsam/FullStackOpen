@@ -46,6 +46,19 @@ const App = () => {
     }
   };
 
+  const addBlog = async (blogObject) => {
+    const newBlog = await blogService.create(blogObject);
+    console.log(newBlog);
+    setBlogs(blogs.concat(newBlog));
+  };
+  const updateLikes = async (id, blogObject) => {
+    console.log('updating..');
+    const updatedBlog = await blogService.update(id, blogObject);
+    console.log(updatedBlog);
+    const newArr = blogs.filter((blog) => blog.id !== id);
+    setBlogs(newArr.concat(updatedBlog));
+  };
+
   const blogForm = () => {
     const hideWhenVisible = { display: blogFormVisible ? 'none' : '' };
     const showWhenVisible = { display: blogFormVisible ? '' : 'none' };
@@ -59,7 +72,7 @@ const App = () => {
         </div>
         <div style={showWhenVisible}>
           <BlogForm
-            blogService={blogService}
+            createBlog={addBlog}
             setErrorMessage={setErrorMessage}
             setSuccessMessage={setSuccessMessage}
           />
@@ -124,7 +137,12 @@ const App = () => {
       </p>
       {blogForm()}
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} blogService={blogService} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          blogService={blogService}
+          updateLikes={updateLikes}
+        />
       ))}
     </div>
   );
