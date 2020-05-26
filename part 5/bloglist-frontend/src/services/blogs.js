@@ -23,7 +23,7 @@ const remove = async (id) => {
   const config = {
     headers: { Authorization: token },
   };
-  const response = await axios.delete(`${baseUrl}/${id}`, config);
+  await axios.delete(`${baseUrl}/${id}`, config);
 };
 
 const update = async (id, newObject) => {
@@ -31,8 +31,7 @@ const update = async (id, newObject) => {
     headers: { Authorization: token },
   };
   const response = await axios.put(`${baseUrl}/${id}`, newObject, config);
-  console.log(newObject, response);
   return response.data;
 };
 
-export default { getAll, create, update, setToken };
+export default { getAll, create, update, setToken, remove };

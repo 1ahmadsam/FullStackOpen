@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 const BlogForm = ({ createBlog, setSuccessMessage, setErrorMessage }) => {
   const [author, setAuthor] = useState('');
   const [title, setTitle] = useState('');
@@ -7,13 +8,11 @@ const BlogForm = ({ createBlog, setSuccessMessage, setErrorMessage }) => {
   const addBlog = async (event) => {
     event.preventDefault();
     try {
-      //blogService.setToken(user.token);
       createBlog({
         title,
         author,
         url,
       });
-
       setSuccessMessage(`a new blog ${title} by ${author} added`);
       setTimeout(() => {
         setSuccessMessage(null);
@@ -28,6 +27,9 @@ const BlogForm = ({ createBlog, setSuccessMessage, setErrorMessage }) => {
         setErrorMessage(null);
       }, 5000);
     }
+  };
+  BlogForm.propTypes = {
+    createBlog: PropTypes.func.isRequired,
   };
   return (
     <React.Fragment>

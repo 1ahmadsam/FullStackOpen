@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-const Blog = ({ blog, updateLikes }) => {
+const Blog = ({ blog, updateLikes, deleteBlog }) => {
   const [showFullBlog, setShowFullBlog] = useState(false);
-
-  const hideWhenVisible = { display: showFullBlog ? 'none' : '' };
   const showWhenVisible = { display: showFullBlog ? '' : 'none' };
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -14,14 +13,6 @@ const Blog = ({ blog, updateLikes }) => {
   const handleLike = async (event) => {
     event.preventDefault();
     try {
-      //blogService.setToken(user.token);
-      // const currentBlog = await blogService.update(blog.id, {
-      //   title: blog.title,
-      //   author: blog.author,
-      //   url: blog.url,
-      //   likes: blog.likes + 1,
-      //   user: blog.user ? blog.user.id : null,
-      // });
       updateLikes(blog.id, {
         title: blog.title,
         author: blog.author,
@@ -40,6 +31,16 @@ const Blog = ({ blog, updateLikes }) => {
       return <button onClick={() => setShowFullBlog(true)}>view</button>;
     }
   };
+  const handleDelete = async (event) => {
+    event.preventDefault();
+    if (window.confirm(`Remove blog : ${blog.title} by ${blog.author}`)) {
+      try {
+        deleteBlog(blog.id);
+      } catch (exception) {
+        console.log(exception);
+      }
+    }
+  };
   return (
     <div style={blogStyle}>
       <div style={{ display: 'inline-block' }}>
@@ -52,7 +53,7 @@ const Blog = ({ blog, updateLikes }) => {
         <br />
         {blog.user ? blog.user.name : null}
         <br />
-        <button>remove</button>
+        <button onClick={handleDelete}>remove</button>
       </div>
     </div>
   );

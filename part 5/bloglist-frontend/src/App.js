@@ -56,7 +56,11 @@ const App = () => {
     const newArr = blogs.filter((blog) => blog.id !== id);
     setBlogs(newArr.concat(updatedBlog));
   };
-  const deleteBlog = async (id) => {};
+  const deleteBlog = async (id) => {
+    await blogService.remove(id);
+    const newArr = blogs.filter((blog) => blog.id !== id);
+    setBlogs(newArr);
+  };
 
   const blogForm = () => {
     const hideWhenVisible = { display: blogFormVisible ? 'none' : '' };
@@ -83,7 +87,12 @@ const App = () => {
   const sortedBlog = () => {
     const sortedBlog = blogs.sort((a, b) => (a.likes > b.likes ? -1 : 1));
     return sortedBlog.map((blog) => (
-      <Blog key={blog.id} blog={blog} updateLikes={updateLikes} />
+      <Blog
+        key={blog.id}
+        blog={blog}
+        updateLikes={updateLikes}
+        deleteBlog={deleteBlog}
+      />
     ));
   };
 
