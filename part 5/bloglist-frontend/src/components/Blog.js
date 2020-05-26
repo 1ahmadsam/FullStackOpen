@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-const Blog = ({ blog, blogService, updateLikes }) => {
+const Blog = ({ blog, updateLikes }) => {
   const [showFullBlog, setShowFullBlog] = useState(false);
 
   const hideWhenVisible = { display: showFullBlog ? 'none' : '' };
@@ -22,24 +22,14 @@ const Blog = ({ blog, blogService, updateLikes }) => {
       //   likes: blog.likes + 1,
       //   user: blog.user ? blog.user.id : null,
       // });
-      console.log('clicked');
       updateLikes(blog.id, {
         title: blog.title,
         author: blog.author,
         url: blog.url,
         likes: blog.likes + 1,
-        user: blog.user ? blog.user.id : null,
+        user: blog.user ? blog.user : null,
       });
-
-      // setSuccessMessage(`a new blog ${title} by ${author} added`);
-      // setTimeout(() => {
-      //   setSuccessMessage(null);
-      // }, 5000);
     } catch (exception) {
-      // setErrorMessage('Fill out the fields');
-      // setTimeout(() => {
-      //   setErrorMessage(null);
-      // }, 5000);
       console.log(exception);
     }
   };
@@ -61,6 +51,8 @@ const Blog = ({ blog, blogService, updateLikes }) => {
         likes {blog.likes} <button onClick={handleLike}>like</button>
         <br />
         {blog.user ? blog.user.name : null}
+        <br />
+        <button>remove</button>
       </div>
     </div>
   );

@@ -52,12 +52,11 @@ const App = () => {
     setBlogs(blogs.concat(newBlog));
   };
   const updateLikes = async (id, blogObject) => {
-    console.log('updating..');
     const updatedBlog = await blogService.update(id, blogObject);
-    console.log(updatedBlog);
     const newArr = blogs.filter((blog) => blog.id !== id);
     setBlogs(newArr.concat(updatedBlog));
   };
+  const deleteBlog = async (id) => {};
 
   const blogForm = () => {
     const hideWhenVisible = { display: blogFormVisible ? 'none' : '' };
@@ -80,6 +79,12 @@ const App = () => {
         </div>
       </div>
     );
+  };
+  const sortedBlog = () => {
+    const sortedBlog = blogs.sort((a, b) => (a.likes > b.likes ? -1 : 1));
+    return sortedBlog.map((blog) => (
+      <Blog key={blog.id} blog={blog} updateLikes={updateLikes} />
+    ));
   };
 
   const loginForm = () => (
@@ -136,14 +141,7 @@ const App = () => {
         </button>
       </p>
       {blogForm()}
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          blogService={blogService}
-          updateLikes={updateLikes}
-        />
-      ))}
+      {sortedBlog()}
     </div>
   );
 };
