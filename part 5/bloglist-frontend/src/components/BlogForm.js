@@ -20,7 +20,6 @@ const BlogForm = ({ createBlog, setSuccessMessage, setErrorMessage }) => {
       setTitle('');
       setAuthor('');
       setUrl('');
-      console.log(title, url, author);
     } catch (exception) {
       setErrorMessage('Fill out the fields');
       setTimeout(() => {
@@ -38,6 +37,7 @@ const BlogForm = ({ createBlog, setSuccessMessage, setErrorMessage }) => {
         <div>
           title:
           <input
+            id='title'
             type='text'
             value={title}
             name='Title'
@@ -47,6 +47,7 @@ const BlogForm = ({ createBlog, setSuccessMessage, setErrorMessage }) => {
         <div>
           author:
           <input
+            id='author'
             type='text'
             value={author}
             name='Author'
@@ -56,6 +57,7 @@ const BlogForm = ({ createBlog, setSuccessMessage, setErrorMessage }) => {
         <div>
           url:
           <input
+            id='url'
             type='text'
             value={url}
             name='URL'

@@ -42,11 +42,9 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
     }
   };
   return (
-    <div style={blogStyle}>
-      <div style={{ display: 'inline-block' }}>
-        {blog.title} {blog.author} {viewButton()}
-      </div>
-      <div style={showWhenVisible}>
+    <div style={blogStyle} className='blog'>
+      {blog.title} {blog.author} {viewButton()}
+      <div style={showWhenVisible} className='blogFullInfo'>
         {blog.url}
         <br />
         likes {blog.likes} <button onClick={handleLike}>like</button>
