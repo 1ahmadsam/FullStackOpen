@@ -50,10 +50,44 @@ describe('Blog app', function () {
       cy.contains('testing title function! alucard');
     });
     describe('blog exists', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          author: 'alucard',
+          title: 'testing title function! 2',
+          url: 'www.example2.com',
+          likes: 0,
+        });
+        cy.createBlog({
+          author: 'alucard',
+          title: 'testing title function! 3',
+          url: 'www.example3.com',
+          likes: 4,
+        });
+        cy.createBlog({
+          author: 'pitu',
+          title: 'physics education',
+          url: 'www.physics.com',
+          likes: 10,
+        });
+        cy.visit('http://localhost:3000');
+      });
       //fix this
       it('blog can be liked', function () {
         cy.contains('view').click();
         cy.contains('like').click();
+      });
+
+      it('blog can be deleted', function () {
+        cy.contains('view').click();
+        cy.contains('remove').click();
+      });
+      it('ordered by likes', function () {
+        cy.get('.blog')
+          .invoke('text')
+          .should(
+            'eq',
+            'physics education pitu viewwww.physics.comlikes 10 likeAlucard Malloremovetesting title function! 3 alucard viewwww.example3.comlikes 4 likeAlucard Malloremovetesting title function! 2 alucard viewwww.example2.comlikes 0 likeAlucard Malloremove'
+          );
       });
     });
   });
