@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   useParams,
+  useHistory,
   BrowserRouter as Router,
   Switch,
   Route,
@@ -99,6 +100,7 @@ const Footer = () => (
 );
 
 const CreateNew = (props) => {
+  const history = useHistory();
   const [content, setContent] = useState('');
   const [author, setAuthor] = useState('');
   const [info, setInfo] = useState('');
@@ -111,6 +113,12 @@ const CreateNew = (props) => {
       info,
       votes: 0,
     });
+    history.push('/');
+    //notification
+    props.setNotification(`a new anecdote ${content} created!`);
+    setTimeout(() => {
+      props.setNotification('');
+    }, 10 * 1000);
   };
 
   return (
@@ -190,13 +198,13 @@ const App = () => {
       <div>
         <h1>Software anecdotes</h1>
         <Menu />
-
+        {notification}
         <Switch>
           <Route path='/anecdotes/:id'>
             <Anecdote anecdotes={anecdotes} />
           </Route>
           <Route path='/create'>
-            <CreateNew addNew={addNew} />
+            <CreateNew addNew={addNew} setNotification={setNotification} />
           </Route>
           <Route path='/about'>
             <About />
