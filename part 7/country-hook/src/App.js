@@ -57,7 +57,6 @@ const Country = ({ country }) => {
 const App = () => {
   const nameInput = useField('text');
   const [name, setName] = useState('');
-  console.log(name);
   const country = useCountry(name);
 
   const fetch = (e) => {
@@ -73,7 +72,7 @@ const App = () => {
         <button>find</button>
       </form>
 
-      <Country country={country} />
+      {name ? <Country country={country} /> : null}
     </div>
   );
 };
