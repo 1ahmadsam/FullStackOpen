@@ -7,10 +7,9 @@ export const useField = (type) => {
     setValue(e.target.value);
   };
 
-  const clearField = (e) => {
+  const reset = () => {
     setValue('');
-    e.target.value = '';
   };
 
-  return { type, value, onChange, clearField };
+  return { type, value, onChange, reset };
 };

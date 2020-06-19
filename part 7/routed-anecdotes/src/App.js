@@ -125,9 +125,9 @@ const CreateNew = (props) => {
     }, 10 * 1000);
   };
   const clearAll = () => {
-    content.clearField;
-    author.clearField;
-    info.clearField;
+    content.reset();
+    author.reset();
+    info.reset();
   };
 
   return (
@@ -136,18 +136,18 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...content} reset='' />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...author} reset='' />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...info} reset='' />
         </div>
         <button>create</button>
-        <button type='button' onClick={clearField}>
+        <button type='button' onClick={clearAll}>
           reset
         </button>
       </form>
