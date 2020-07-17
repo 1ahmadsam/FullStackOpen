@@ -97,6 +97,14 @@ const typeDefs = gql`
     born: Int
     bookCount: Int!
   }
+  type Mutation {
+    addBook(
+      title: String!
+      author: String!
+      published: Int!
+      genres: [String!]!
+    ): Book
+  }
   type Query {
     bookCount: Int!
     authorCount: Int!
@@ -119,6 +127,14 @@ const resolvers = {
       }
     },
     allAuthors: () => authors,
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      const book = { ...args };
+      books = books.concat(book);
+      authors = authors.concat({ name: args.author });
+      return book;
+    },
   },
   Author: {
     bookCount: (root) => {
