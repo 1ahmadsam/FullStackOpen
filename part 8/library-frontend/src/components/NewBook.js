@@ -22,10 +22,11 @@ const CREATE_BOOK = gql`
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('');
-  const [author, setAuhtor] = useState('');
+  const [author, setAuthor] = useState('');
   const [published, setPublished] = useState('');
   const [genre, setGenre] = useState('');
   const [genres, setGenres] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const [addBook] = useMutation(CREATE_BOOK);
   if (!props.show) {
@@ -34,14 +35,19 @@ const NewBook = (props) => {
 
   const submit = async (event) => {
     event.preventDefault();
-    addBook({ variables: { title, author, published, genres } });
-    console.log('add book...');
+    if (!isNaN(published)) {
+      const publishedDate = parseInt(published);
+      addBook({ variables: { title, author, publishedDate, genres } });
+      console.log('add book...');
 
-    setTitle('');
-    setPublished('');
-    setAuhtor('');
-    setGenres([]);
-    setGenre('');
+      setTitle('');
+      setPublished('');
+      setAuthor('');
+      setGenres([]);
+      setGenre('');
+    } else {
+      console.log('invalid publish date');
+    }
   };
 
   const addGenre = () => {
@@ -51,6 +57,7 @@ const NewBook = (props) => {
 
   return (
     <div>
+      <h2>{errorMessage ? errorMessage : null}</h2>
       <form onSubmit={submit}>
         <div>
           title
@@ -63,7 +70,7 @@ const NewBook = (props) => {
           author
           <input
             value={author}
-            onChange={({ target }) => setAuhtor(target.value)}
+            onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
