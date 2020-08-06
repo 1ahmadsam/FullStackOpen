@@ -19,6 +19,10 @@ const Authors = (props) => {
     return <div>loading</div>;
   }
 
+  const authors = result.data.allAuthors;
+  if (!name) {
+    setName(authors[0].name);
+  }
   const submit = async (event) => {
     event.preventDefault();
     const publishedDate = parseInt(published);
@@ -27,9 +31,9 @@ const Authors = (props) => {
     };
     changeAuthor(editBook);
     console.log('clicked');
+    console.log('name:', name);
   };
 
-  const authors = result.data.allAuthors;
   return (
     <div>
       <h2>authors</h2>
@@ -51,13 +55,13 @@ const Authors = (props) => {
       </table>
       <h2>Set birthyear</h2>
       <form onSubmit={submit}>
-        <div>
-          name
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
-        </div>
+        <select value={name} onChange={({ target }) => setName(target.value)}>
+          {authors.map((a) => (
+            <option key={a.name} value={a.name}>
+              {a.name}
+            </option>
+          ))}
+        </select>
         <div>
           born
           <input
@@ -66,6 +70,7 @@ const Authors = (props) => {
             onChange={({ target }) => setPublished(target.value)}
           />
         </div>
+
         <button type='submit'>update Author</button>
       </form>
     </div>
