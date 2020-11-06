@@ -21,7 +21,7 @@ const parseArguments = (args: Array<string>): BmiValues => {
 
 
 
-const calculateBmi = (height: number, weight: number ) : string => {
+export const calculateBmi = (height: number, weight: number ) : string => {
     
     const BMI = weight / Math.pow((height / 100), 2)
     if (BMI < 15) {
@@ -48,6 +48,7 @@ const calculateBmi = (height: number, weight: number ) : string => {
     else if (BMI >= 40){
         return 'Obese Class III (Very severely obese)'
     }
+    return 'Incorrect Input'
 }
 
 try { 
