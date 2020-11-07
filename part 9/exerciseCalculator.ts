@@ -13,23 +13,23 @@ interface exerciseValues {
     target: number
 }
 
-const parseArgumentsExercise = (args: Array<string>) :  exerciseValues => {
+export const parseArgumentsExercise = (args: Array<string>) :  exerciseValues => {
     if (args.length < 4) throw new Error('Not enough arguments');
-    let exerciseValues = []
+    const exerciseValues = [];
     for (let i = 3; i < args.length; i ++) {
         if (!isNaN(Number(args[i]))) {
-            exerciseValues.push(Number(args[i]))
+            exerciseValues.push(Number(args[i]));
         } else {
             throw new Error('Provided values were not all numbers!');
         }
     }
-    return { values: exerciseValues, target: Number(args[2])}
+    return { values: exerciseValues, target: Number(args[2])};
     
-}
-const calculateExercises = (args: Array<number>, target: number): Results => {
+};
+export const calculateExercises = (args: Array<number>, target: number): Results => {
     // calculate average, amount of days & amount of days actually exercising
     let trainingDays = 0;
-    let numberOfDays = args.length;
+    const numberOfDays = args.length;
     let hoursTrained = 0;
 
     args.forEach(day => {
@@ -37,25 +37,25 @@ const calculateExercises = (args: Array<number>, target: number): Results => {
             trainingDays += 1;
             hoursTrained += day;
         }
-    })
-    const average = hoursTrained / numberOfDays
+    });
+    const average = hoursTrained / numberOfDays;
 
-    const ratingRounded = Math.round(average)
-    let rating;
-    let ratingDescription;
+    const ratingRounded = Math.round(average);
+    let rating=0;
+    let ratingDescription='incorrect parameters';
     if (ratingRounded === target && average < target) {
-        ratingDescription= 'not too bad but could be better'
+        ratingDescription= 'not too bad but could be better';
         rating = 2;
     }
     else if (ratingRounded >= target && average > target) {
-        ratingDescription= 'good work you hit the target and more'
+        ratingDescription= 'good work you hit the target and more';
         rating = 3;
     }
     else if (ratingRounded < target && average < target) {
-        ratingDescription= 'need to improve, poor performance'
+        ratingDescription= 'need to improve, poor performance';
         rating = 1;
     } else if (average === target) {
-        ratingDescription= 'good work you hit the target exactly'
+        ratingDescription= 'good work you hit the target exactly';
         rating = 2.5;
     }
 
@@ -64,14 +64,14 @@ const calculateExercises = (args: Array<number>, target: number): Results => {
         rating: rating,
         ratingDescription: ratingDescription,
         target: target,
-        average: average }
-}
+        average: average };
+};
 
-try {
-    const { values, target } = parseArgumentsExercise(process.argv);
-    console.log(calculateExercises(values, target))
-  } catch (e) {
-    console.log('Error, something bad happened, message: ', e.message);
-}
+// try {
+//     const { values, target } = parseArgumentsExercise(process.argv);
+//     console.log(calculateExercises(values, target));
+//   } catch (err) {
+//     console.log('Error, something bad happened, message: ', err);
+// }
 
 // console.log(calculateExercises( [3, 0, 2, 4.5, 0, 3, 1] , 2) )
